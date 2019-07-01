@@ -36,10 +36,6 @@ fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND) : Date {
     return this
 }
 
-//fun Date.humanizeDiff() : String {
-//    return humanizeDifferent(this)
-//}
-
 fun Date.humanizeDiff(date: Date = Date()): String {
     val diff = ((date.time - this.time) / SECOND).toInt()
 
