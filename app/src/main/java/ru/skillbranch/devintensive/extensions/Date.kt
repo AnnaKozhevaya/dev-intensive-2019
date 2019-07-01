@@ -9,7 +9,7 @@ const val MINUTE = 60 * SECOND
 const val HOUR = 60 * MINUTE
 const val DAY = 24 * HOUR
 
-enum class TimeUnit {
+enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
@@ -21,14 +21,14 @@ fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy") : String {
     return dateFormat.format(this)
 }
 
-fun Date.add(value: Int, units: TimeUnit = TimeUnit.SECOND) : Date {
+fun Date.add(value: Int, units: TimeUnits = TimeUnits.SECOND) : Date {
     var time = this.time
 
     time += when (units) {
-        TimeUnit.SECOND -> value * SECOND
-        TimeUnit.MINUTE -> value * MINUTE
-        TimeUnit.HOUR -> value * HOUR
-        TimeUnit.DAY -> value * DAY
+        TimeUnits.SECOND -> value * SECOND
+        TimeUnits.MINUTE -> value * MINUTE
+        TimeUnits.HOUR -> value * HOUR
+        TimeUnits.DAY -> value * DAY
     }
 
     this.time = time
@@ -36,24 +36,24 @@ fun Date.add(value: Int, units: TimeUnit = TimeUnit.SECOND) : Date {
     return this
 }
 
-fun Date.humanizeDifferent() : String {
-    return humanizeDiff(this)
-}
+//fun Date.humanizeDiff() : String {
+//    return humanizeDifferent(this)
+//}
 
-fun humanizeDiff(date: Date = Date()): String {
-    val diff = ((Date().time - date.time) / SECOND).toInt()
+fun Date.humanizeDiff(date: Date = Date()): String {
+    val diff = ((date.time - this.time) / SECOND).toInt()
 
     var res = ""
     when (abs(diff)) {
-        in DateIntervals.JustNow.range -> res = DateIntervals.JustNow.getHumanizeName(diff)
-        in DateIntervals.FewSecondsAgo.range -> res = DateIntervals.FewSecondsAgo.getHumanizeName(diff)
-        in DateIntervals.MinuteAgo.range -> res = DateIntervals.MinuteAgo.getHumanizeName(diff)
-        in DateIntervals.FewMinutesAgo.range -> res = DateIntervals.FewMinutesAgo.getHumanizeName(diff)
-        in DateIntervals.HourAgo.range -> res = DateIntervals.HourAgo.getHumanizeName(diff)
-        in DateIntervals.FewHoursAgo.range -> res = DateIntervals.FewHoursAgo.getHumanizeName(diff)
-        in DateIntervals.DayAgo.range -> res = DateIntervals.DayAgo.getHumanizeName(diff)
-        in DateIntervals.FewDaysAgo.range -> res = DateIntervals.FewDaysAgo.getHumanizeName(diff)
-        in DateIntervals.MoreYear.range -> res = DateIntervals.MoreYear.getHumanizeName(diff)
+        in DateIntervals.JustNow.range -> res = DateIntervals.JustNow.getHumanizeName(diff).trim()
+        in DateIntervals.FewSecondsAgo.range -> res = DateIntervals.FewSecondsAgo.getHumanizeName(diff).trim()
+        in DateIntervals.MinuteAgo.range -> res = DateIntervals.MinuteAgo.getHumanizeName(diff).trim()
+        in DateIntervals.FewMinutesAgo.range -> res = DateIntervals.FewMinutesAgo.getHumanizeName(diff).trim()
+        in DateIntervals.HourAgo.range -> res = DateIntervals.HourAgo.getHumanizeName(diff).trim()
+        in DateIntervals.FewHoursAgo.range -> res = DateIntervals.FewHoursAgo.getHumanizeName(diff).trim()
+        in DateIntervals.DayAgo.range -> res = DateIntervals.DayAgo.getHumanizeName(diff).trim()
+        in DateIntervals.FewDaysAgo.range -> res = DateIntervals.FewDaysAgo.getHumanizeName(diff).trim()
+        in DateIntervals.MoreYear.range -> res = DateIntervals.MoreYear.getHumanizeName(diff).trim()
     }
 
     return res
