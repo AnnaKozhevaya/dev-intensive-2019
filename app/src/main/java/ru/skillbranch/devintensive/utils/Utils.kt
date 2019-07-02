@@ -77,6 +77,6 @@ object Utils {
     fun toInitials(firstName: String?, lastName: String?): String? {
         val firstInitial = firstName?.trim()?.firstOrNull()?.toUpperCase() ?: ""
         val lastInitial = lastName?.trim()?.firstOrNull()?.toUpperCase() ?: ""
-        return if ("$firstInitial$lastInitial".isEmpty()) "null" else "$firstInitial$lastInitial"
+        return if ("$firstInitial$lastInitial".isEmpty()) null else "$firstInitial$lastInitial"
     }
 }
