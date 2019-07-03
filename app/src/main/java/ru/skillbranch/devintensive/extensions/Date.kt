@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive.extensions
 
+import ru.skillbranch.devintensive.utils.Utils
 import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,7 +14,18 @@ enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
-    DAY
+    DAY;
+
+    fun plural(value: Int): String {
+        var result = "$value "
+        result += when (this) {
+            SECOND -> Utils.getDeclensionSeconds(value)
+            MINUTE -> Utils.getDeclensionMinutes(value)
+            HOUR -> Utils.getDeclensionHours(value)
+            DAY -> Utils.getDeclensionDays(value)
+        }
+        return result
+    }
 }
 
 fun Date.format(pattern: String = "HH:mm:ss dd.MM.yy") : String {
@@ -77,47 +89,23 @@ enum class DateIntervals(val range: IntRange) {
             }
             FewMinutesAgo ->  {
                 val minutes = abs(secons / 60)
-                return "${if (secons > 0) "" else "через "}$minutes ${getDeclensionMinutes(minutes)} ${if (secons > 0) "назад" else ""}"
+                return "${if (secons > 0) "" else "через "}$minutes ${Utils.getDeclensionMinutes(minutes)} ${if (secons > 0) "назад" else ""}"
             }
             HourAgo -> {
                 return if (secons > 0) "час назад" else "через час"
             }
             FewHoursAgo -> {
                 val hour = abs(secons / (60 * 60))
-                return "${if (secons > 0) "" else "через "}$hour ${getDeclensionHours(hour)} ${if (secons > 0) "назад" else ""}"
+                return "${if (secons > 0) "" else "через "}$hour ${Utils.getDeclensionHours(hour)} ${if (secons > 0) "назад" else ""}"
             }
             DayAgo -> {
                 return if (secons > 0) "день назад" else "через день"
             }
             FewDaysAgo -> {
                 val days = abs(secons / (60 * 60 * 24))
-                return "${if (secons > 0) "" else "через "}$days ${getDeclensionDays(days)} ${if (secons > 0) "назад" else ""}"
+                return "${if (secons > 0) "" else "через "}$days ${Utils.getDeclensionDays(days)} ${if (secons > 0) "назад" else ""}"
             }
             MoreYear -> return if (secons > 0) "более года назад" else "более чем через год"
-        }
-    }
-
-    private fun getDeclensionMinutes(minutes: Int): String {
-        return when(if (minutes < 20) minutes else minutes % 10) {
-            0, in 5.. 20 -> "минут"
-            1 -> "минуту"
-            else -> "минуты"
-        }
-    }
-
-    private fun getDeclensionHours(hours: Int): String {
-        return when(if (hours < 20) hours else hours % 10) {
-            0, in 5.. 20 -> "часов"
-            1 -> "час"
-            else -> "часа"
-        }
-    }
-
-    private fun getDeclensionDays(days: Int): String {
-        return when(if (days < 20) days else days % 10) {
-            0, in 5.. 20 -> "дней"
-            1 -> "день"
-            else -> "дня"
         }
     }
 }

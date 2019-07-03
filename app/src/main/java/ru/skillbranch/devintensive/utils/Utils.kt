@@ -79,4 +79,36 @@ object Utils {
         val lastInitial = lastName?.trim()?.firstOrNull()?.toUpperCase() ?: ""
         return if ("$firstInitial$lastInitial".isEmpty()) null else "$firstInitial$lastInitial"
     }
+
+    fun getDeclensionSeconds(seconds: Int): String {
+        return when(if (seconds < 20) seconds else seconds % 10) {
+            0, in 5.. 20 -> "секунд"
+            1 -> "секунду"
+            else -> "секунды"
+        }
+    }
+
+    fun getDeclensionMinutes(minutes: Int): String {
+        return when(if (minutes < 20) minutes else minutes % 10) {
+            0, in 5.. 20 -> "минут"
+            1 -> "минуту"
+            else -> "минуты"
+        }
+    }
+
+    fun getDeclensionHours(hours: Int): String {
+        return when(if (hours < 20) hours else hours % 10) {
+            0, in 5.. 20 -> "часов"
+            1 -> "час"
+            else -> "часа"
+        }
+    }
+
+    fun getDeclensionDays(days: Int): String {
+        return when(if (days < 20) days else days % 10) {
+            0, in 5.. 20 -> "дней"
+            1 -> "день"
+            else -> "дня"
+        }
+    }
 }
