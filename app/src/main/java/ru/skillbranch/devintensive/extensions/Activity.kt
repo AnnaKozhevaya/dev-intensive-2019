@@ -3,7 +3,8 @@ package ru.skillbranch.devintensive.extensions
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 fun Activity.hideKeyboard() {
@@ -13,15 +14,20 @@ fun Activity.hideKeyboard() {
     imm.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED)
 }
 
-fun Activity.isKeyboardOpen(): Boolean = getDiffVisibleHeightAndAllHeight(this) != 0
+fun Activity.isKeyboardOpen(): Boolean = isKeyboardShown()
 
-fun Activity.isKeyboardClosed(): Boolean = getDiffVisibleHeightAndAllHeight(this) == 0
+fun Activity.isKeyboardClosed(): Boolean = !isKeyboardShown()
 
-fun getDiffVisibleHeightAndAllHeight(activity: Activity): Int {
+fun Activity.isKeyboardShown(): Boolean {
     val rect = Rect()
-    val rootView = activity.window.decorView
+    val rootView = findViewById<View>(android.R.id.content)
     rootView.getWindowVisibleDisplayFrame(rect)
-    rootView.rootView.height
-    Log.d("M_Activity","DiffVisibleHeightAndAllHeight = ${rootView.rootView.height - (rect.bottom - rect.top)}")
-    return rootView.rootView.height - (rect.bottom - rect.top)
+    val hightDiff = rootView.height - rect.height()
+    val marginOfError = Math.round(
+        TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            50F,
+            this.resources.displayMetrics))
+
+    return hightDiff > marginOfError
 }
