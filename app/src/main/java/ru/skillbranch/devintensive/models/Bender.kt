@@ -44,8 +44,8 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
 
     private fun validate(answer: String): Boolean {
         return when (question) {
-            Question.NAME -> answer.matches("[A-ZА-Я]\\w+".toRegex())
-            Question.PROFESSION -> Regex("[a-zа-я]\\w+").matches(input = answer)
+            Question.NAME -> answer.isNotEmpty() && answer[0].isUpperCase()
+            Question.PROFESSION -> answer.isNotEmpty() && answer[0].isLowerCase()
             Question.MATERIAL -> !Regex("\\d+").containsMatchIn(answer)
             Question.BDAY -> answer.isDigitsOnly()
             Question.SERIAL -> answer.isDigitsOnly() && answer.length == 7
