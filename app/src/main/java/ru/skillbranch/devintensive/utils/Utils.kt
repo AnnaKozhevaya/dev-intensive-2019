@@ -64,7 +64,7 @@ object Utils {
             }
 
             if (!transliterationMap[payload[i].toString().toLowerCase()].isNullOrEmpty()) {
-                buffer += transliterationMap[payload[i].toString().toLowerCase()]?.toUpperCase()
+                buffer += transliterationMap[payload[i].toString().toLowerCase()]?.capitalize()
                 continue
             }
 
@@ -110,5 +110,39 @@ object Utils {
             1 -> "день"
             else -> "дня"
         }
+    }
+
+    fun isValidGithubRepoUrl(url: String): Boolean {
+        val exceptOf = setOf(
+            "enterprise",
+            "features",
+            "topics",
+            "collections",
+            "trending",
+            "events",
+            "marketplace",
+            "pricing",
+            "nonprofit",
+            "customer-stories",
+            "security",
+            "login",
+            "join")
+
+        var buffer = url
+        if (buffer.startsWith("https://")) {
+            buffer = buffer.replace("https://", "")
+        }
+
+        if (buffer.startsWith("github.com/")) {
+            buffer = buffer.replace("github.com/", "")
+        } else if (buffer.startsWith("www.github.com/")) {
+            buffer = buffer.replace("www.github.com/", "")
+        } else {
+            return false
+        }
+
+        val splitted = buffer.split("/").filter { it.isNotEmpty() }
+
+        return splitted.size == 1 && !exceptOf.contains(splitted[0])
     }
 }
